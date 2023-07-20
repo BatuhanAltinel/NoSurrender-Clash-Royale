@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TowerArrow : MonoBehaviour
 {
+    [SerializeField] float _arrowSpeed;
 
     void Start()
     {
@@ -16,19 +17,19 @@ public class TowerArrow : MonoBehaviour
 
     }
 
-    public void MoveToTarget(Transform target,float hitSpeed)
+    public void MoveToTarget(Transform target)
     {
        // Move to enemy transform
-       StartCoroutine(MoveToTargetRoutine(target,hitSpeed));
+       StartCoroutine(MoveToTargetRoutine(target));
     } 
 
-    IEnumerator MoveToTargetRoutine(Transform target,float hitSpeed)
+    IEnumerator MoveToTargetRoutine(Transform target)
     {
         bool _canMove = true;
 
         while(_canMove)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target.position, hitSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target.position, _arrowSpeed * Time.deltaTime);
             yield return null;
 
             if(Vector3.Distance(target.position,transform.position) < 0.2f)
@@ -36,6 +37,25 @@ public class TowerArrow : MonoBehaviour
                 _canMove = false;
                 yield break;
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Unit>(out Unit unit))
+        {
+            
+            if (unit._unitType == UnitType.Enemy)
+            {
+                IDamagable dmg = unit.GetComponent<IDamagable>();
+
+                dmg.TakeDamage(15); // for test
+
+                gameObject.SetActive(false);
+
+                Debug.Log("Unit took damage");
+            }
+
         }
     }
 

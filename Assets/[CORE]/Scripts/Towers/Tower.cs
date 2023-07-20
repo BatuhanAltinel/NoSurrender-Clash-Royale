@@ -51,6 +51,7 @@ public abstract class Tower : MonoBehaviour
     void Update()
     {
         AttackCoolDown();
+        AttackToEnemy();
     }
     
     protected void CheckEnemyUnitInSight()
@@ -61,13 +62,14 @@ public abstract class Tower : MonoBehaviour
         {
             if(col.TryGetComponent<Unit>(out Unit unit) && !_targetSelected)
             {
-                Debug.Log("Unit founded");
+               
                if(unit._unitType == UnitType.Enemy)
                {
                     _targetSelected = true;
+
                     SetTheTarget(col.GetComponent<Unit>());
-                    AttackToEnemy(_hitSpeed);
-                    Debug.Log("target detected");
+                    AttackToEnemy();
+                    
                     break;
                }
  
@@ -86,13 +88,16 @@ public abstract class Tower : MonoBehaviour
     }
 
 
-    private void AttackToEnemy(float hitSpeed)
+    private void AttackToEnemy()
     {
-        if(_canAttack)
+        if(_canAttack && _targetSelected)
         {
-            TowerArrow arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint);
-            arrow.MoveToTarget(_targetTransform,hitSpeed);
-            
+            GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint);
+
+            if(arrow != null && _targetTransform != null)
+                arrow.GetComponent<TowerArrow>().MoveToTarget(_targetTransform);
+
+            _hitCooldown = 0;
         }
             
     }
@@ -107,7 +112,7 @@ public abstract class Tower : MonoBehaviour
         }else
         {
             _canAttack = false;
-            _hitCooldown = 0;
+            //_hitCooldown = 0;
         }
     }
 

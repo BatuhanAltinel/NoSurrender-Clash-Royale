@@ -37,4 +37,15 @@ public abstract class CharacterUnit : Unit
     [SerializeField] protected CharacterState _characterState;
 
 
+    protected void MoveToTarget()
+    {
+        transform.position = Vector3.MoveTowards(transform.position,_mainTower.transform.position, _moveSpeed * Time.deltaTime);
+    }
+
+    protected void CheckForDie()
+    {
+        if (_hitPoints <= 0)
+            gameObject.SetActive(false);
+    }
+
 }

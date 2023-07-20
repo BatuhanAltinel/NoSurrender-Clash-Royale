@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArcherUnit : CharacterUnit
+public class ArcherUnit : CharacterUnit , IDamagable
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +13,12 @@ public class ArcherUnit : CharacterUnit
     // Update is called once per frame
     void Update()
     {
-        
+        MoveToTarget();
+        CheckForDie();
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+        _hitPoints -= damageAmount;
     }
 }

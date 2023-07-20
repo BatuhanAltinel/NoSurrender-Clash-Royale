@@ -17,7 +17,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     }
 
-    public TowerArrow SpawnArrow(Transform arrowThrowPoint)
+    public GameObject SpawnArrow(Transform arrowThrowPoint)
     {
         GameObject go = _objPool.GetObjectFromPool(0);
 
@@ -26,8 +26,7 @@ public class SpawnManager : Singleton<SpawnManager>
             go.transform.position = arrowThrowPoint.position;
             go.transform.rotation = Quaternion.identity;
 
-            TowerArrow arrow = go.GetComponent<TowerArrow>(); 
-            return arrow;
+            return go;
         }
 
         return null;

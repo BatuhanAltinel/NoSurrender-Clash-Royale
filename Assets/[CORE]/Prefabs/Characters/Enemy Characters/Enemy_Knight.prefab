@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6385926389694039336}
   - component: {fileID: 3923464608768537044}
   - component: {fileID: 2371314465041709263}
+  - component: {fileID: 9143664923306994941}
   m_Layer: 0
   m_Name: Enemy_Knight
   m_TagString: Untagged
@@ -129,6 +130,35 @@ MonoBehaviour:
   _sightRange: 0
   _damage: 0
   _moveSpeed: 0
+  _mainTower: {fileID: 0}
+  _sideTowers: []
   _characterType: 0
   _targetCharacterType: 0
   _characterState: 0
+--- !u!54 &9143664923306994941
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4155539813353273189}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
