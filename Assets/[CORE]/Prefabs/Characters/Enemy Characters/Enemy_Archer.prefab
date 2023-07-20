@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1933399989908086454
 MeshFilter:
@@ -117,16 +117,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 6308414385254328315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97422ea291e260f4fbc11620f41d34fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e06b11db079b4d488d11f900b196fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _mana: 3
-  _hitPoints: 252
-  _unitAmount: 1
-  _attackRange: 1.2
-  _attackSpeed: 1.2
-  _sightRange: 5.5
-  _damage: 167
-  _moveSpeed: 60
+  _hitPoints: 0
+  _unitAmount: 0
+  _unitType: 1
+  _attackRange: 0
+  _attackSpeed: 0
+  _sightRange: 0
+  _damage: 0
+  _moveSpeed: 0
   _characterType: 1
   _targetCharacterType: 3
+  _characterState: 0

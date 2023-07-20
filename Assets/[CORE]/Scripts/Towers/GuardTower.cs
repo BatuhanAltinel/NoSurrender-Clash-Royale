@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class GuardTower : Tower
 {
-    public override void Start()
-    {
-        base.Start();
-    }
+    // public override void Start()
+    // {
+    //     base.Start();
+    // }
 
-    public override void OnTriggerEnter(Collider other)
+    // public override void OnTriggerEnter(Collider other)
+    // {
+    //     base.OnTriggerEnter(other);
+    // }
+    void FixedUpdate()
     {
-        base.OnTriggerEnter(other);
+        CheckEnemyUnitInSight();
     }
 }

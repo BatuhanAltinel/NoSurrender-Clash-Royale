@@ -2240,6 +2240,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Archer
       objectReference: {fileID: 0}
+    - target: {fileID: 6398661238443842063, guid: e371fc6e2df6e354790f03200de0c783, type: 3}
+      propertyPath: _unitType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7713246229739894422, guid: e371fc6e2df6e354790f03200de0c783, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -2247,8 +2251,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6308414385254328315, guid: e371fc6e2df6e354790f03200de0c783, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7145032925337804281}
   m_SourcePrefab: {fileID: 100100000, guid: e371fc6e2df6e354790f03200de0c783, type: 3}
+--- !u!1 &7145032925337804280 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6308414385254328315, guid: e371fc6e2df6e354790f03200de0c783, type: 3}
+  m_PrefabInstance: {fileID: 7145032925337804279}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7145032925337804281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7145032925337804280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e06b11db079b4d488d11f900b196fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mana: 0
+  _hitPoints: 0
+  _unitAmount: 0
+  _unitType: 1
+  _attackRange: 0
+  _attackSpeed: 0
+  _sightRange: 0
+  _damage: 0
+  _moveSpeed: 0
+  _characterType: 1
+  _targetCharacterType: 3
+  _characterState: 0
 --- !u!1001 &7293104037422903441
 PrefabInstance:
   m_ObjectHideFlags: 0

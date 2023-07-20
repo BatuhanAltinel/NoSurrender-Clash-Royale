@@ -1,18 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : Singleton<SpawnManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    ObjectPool _objPool;
+
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+
+        _objPool = GetComponent<ObjectPool>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+
+    }
+
+    public TowerArrow SpawnArrow(Transform arrowThrowPoint)
+    {
+        GameObject go = _objPool.GetObjectFromPool(0);
+
+        if(go != null)
+        {
+            go.transform.position = arrowThrowPoint.position;
+            go.transform.rotation = Quaternion.identity;
+
+            TowerArrow arrow = go.GetComponent<TowerArrow>(); 
+            return arrow;
+        }
+
+        return null;
     }
 }

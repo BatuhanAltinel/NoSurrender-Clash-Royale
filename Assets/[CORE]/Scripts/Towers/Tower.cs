@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class Tower : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public abstract class Tower : MonoBehaviour
 
     [SerializeField] protected Transform _targetTransform;
     [SerializeField] protected bool _targetSelected;
+    [SerializeField] protected Collider[] _targetUnitColliders; 
     
     [Header("Attack Attributes")]
 
@@ -25,6 +27,8 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected Transform _arrowThrowPoint;
 
     [SerializeField] protected float _hitSpeed;
+    private protected float _hitCooldown;
+    private protected bool _canAttack;
     [SerializeField] protected float _damage;
     
 
@@ -39,41 +43,73 @@ public abstract class Tower : MonoBehaviour
     }
 
 
-    public virtual void Start()
+    private void Start()
     {
-        CalculateColliderSizeDependsOnRange();
-
+        _hitCooldown = _hitSpeed;
     }
 
-    private void CalculateColliderSizeDependsOnRange()
+    void Update()
     {
-        float centerYPos = -(_currentPosition.y / _currentScale.y);
-        _sphereCol.center = new Vector3(0, centerYPos, 0);
-        _sphereCol.radius = _range /2;
+        AttackCoolDown();
+    }
+    
+    protected void CheckEnemyUnitInSight()
+    {
+        _targetUnitColliders =  Physics.OverlapSphere(transform.position, _range);
+
+        foreach (Collider col in _targetUnitColliders)
+        {
+            if(col.TryGetComponent<Unit>(out Unit unit) && !_targetSelected)
+            {
+                Debug.Log("Unit founded");
+               if(unit._unitType == UnitType.Enemy)
+               {
+                    _targetSelected = true;
+                    SetTheTarget(col.GetComponent<Unit>());
+                    AttackToEnemy(_hitSpeed);
+                    Debug.Log("target detected");
+                    break;
+               }
+ 
+            }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _range);
     }
 
-    private void SetTheTarget(EnemyUnit target)
+    private void SetTheTarget(Unit target)
     {
         _targetTransform = target.transform;
     }
 
 
-    private void AttackToEnemy()
+    private void AttackToEnemy(float hitSpeed)
     {
-        _towerArrow.MoveToTarget(_targetTransform);
+        if(_canAttack)
+        {
+            TowerArrow arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint);
+            arrow.MoveToTarget(_targetTransform,hitSpeed);
+            
+        }
+            
     }
 
-
-    public virtual void OnTriggerEnter(Collider other)
+    private void AttackCoolDown()
     {
-        if(!_targetSelected)
-        {
-            if(other.TryGetComponent<EnemyUnit>(out EnemyUnit enemyUnit))
-            {
-                _targetSelected = true;
+        _hitCooldown += Time.deltaTime;
 
-                SetTheTarget(enemyUnit);
-            }
+        if(_hitCooldown >= _hitSpeed)
+        {
+            _canAttack = true;
+        }else
+        {
+            _canAttack = false;
+            _hitCooldown = 0;
         }
     }
+
+
 }

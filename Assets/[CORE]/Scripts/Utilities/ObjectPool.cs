@@ -31,15 +31,15 @@ public class ObjectPool : MonoBehaviour
         }
     }
 
-    public GameObject GetObjectFromPool()
+    public GameObject GetObjectFromPool(int objectIndex)
     {
-        foreach(GameObject obj in _pools[0]._pool)
+        foreach(GameObject obj in _pools[objectIndex]._pool)
         {
             if(!obj.activeInHierarchy)
             {
                 obj.SetActive(true);
-                _pools[0]._pool.Dequeue();
-                _pools[0]._pool.Enqueue(obj);
+                _pools[objectIndex]._pool.Dequeue();
+                _pools[objectIndex]._pool.Enqueue(obj);
                 
                 return obj;
             }
