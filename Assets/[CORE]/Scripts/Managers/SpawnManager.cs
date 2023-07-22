@@ -17,9 +17,11 @@ public class SpawnManager : Singleton<SpawnManager>
 
     }
 
-    public GameObject SpawnArrow(Transform arrowThrowPoint)
+    public GameObject SpawnArrow(Transform arrowThrowPoint,UnitType unitType)
     {
         GameObject go = _objPool.GetObjectFromPool(0);
+
+        go.GetComponent<TowerArrow>().SetUnitType(unitType);
 
         if(go != null)
         {
@@ -27,6 +29,22 @@ public class SpawnManager : Singleton<SpawnManager>
             go.transform.rotation = Quaternion.identity;
 
             return go;
+        }
+
+        return null;
+    }
+
+    public CharacterUnit SpawnCharacterUnit(CharacterType charType , Vector3 spawnPoint, UnitType unitType)
+    {
+        CharacterUnit CU = _objPool.GetCharacterUnit(charType);
+        CU.SetUnitType(unitType);
+
+        if (CU != null)
+        {
+            CU.transform.position = spawnPoint;
+            CU.transform.rotation = Quaternion.identity;
+
+            return CU;
         }
 
         return null;

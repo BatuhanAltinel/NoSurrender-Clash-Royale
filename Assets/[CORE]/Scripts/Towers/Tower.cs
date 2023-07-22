@@ -2,22 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
-public abstract class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour ,IDamagable
 {
     [Header("Tower Attributes")]
     
     [SerializeField] protected float _hitPoints;
+    private protected float _maxHitPoints;
     private Vector3 _currentScale;
     private Vector3 _currentPosition;
-    SphereCollider _sphereCol;
+
+    [SerializeField] protected UnitType _unitType;
+
+    [SerializeField] protected Slider _healthSlider;
 
     
     [Header("Target Attributes")]
 
-    [SerializeField] protected Transform _targetTransform;
-    [SerializeField] protected bool _targetSelected;
-    [SerializeField] protected Collider[] _targetUnitColliders; 
+    [SerializeField] protected Unit _targetUnit;
+
+    [SerializeField] protected bool _targetFounded;
+
+    [SerializeField] protected Collider[] _targetUnitColliders;
+    [SerializeField] protected List<Unit> _enemyUnits;
     
     [Header("Attack Attributes")]
 
@@ -28,24 +36,37 @@ public abstract class Tower : MonoBehaviour
 
     [SerializeField] protected float _hitSpeed;
     private protected float _hitCooldown;
-    private protected bool _canAttack;
+
+    [SerializeField] private protected bool _canAttack;
+    private protected bool _targetEliminated;
+
     [SerializeField] protected float _damage;
-    
 
 
+
+    private void OnEnable()
+    {
+        //EventManager.OnTowerAttack += AttackToEnemy;
+    }
+
+    private void OnDisable()
+    {
+        //EventManager.OnTowerAttack -= AttackToEnemy;
+    }
 
 
     private void Awake() 
     {
         _currentPosition = transform.position;
         _currentScale = transform.localScale;
-        _sphereCol = GetComponent<SphereCollider>();    
+        _targetUnit = null;
     }
 
 
     private void Start()
     {
         _hitCooldown = _hitSpeed;
+        _maxHitPoints = _hitPoints;
     }
 
     void Update()
@@ -54,49 +75,111 @@ public abstract class Tower : MonoBehaviour
         AttackToEnemy();
     }
     
-    protected void CheckEnemyUnitInSight()
-    {
-        _targetUnitColliders =  Physics.OverlapSphere(transform.position, _range);
+    //protected void CheckEnemyUnitInSight()
+    //{
+    //    _targetUnitColliders =  Physics.OverlapSphere(transform.position, _range);
 
-        foreach (Collider col in _targetUnitColliders)
-        {
-            if(col.TryGetComponent<Unit>(out Unit unit) && !_targetSelected)
-            {
-               
-               if(unit._unitType == UnitType.Enemy)
-               {
-                    _targetSelected = true;
+    //    if (_targetUnitColliders.Length > 0)
+    //    {
+    //        FindEnemyTargets();
+    //    }
 
-                    SetTheTarget(col.GetComponent<Unit>());
-                    AttackToEnemy();
-                    
-                    break;
-               }
- 
-            }
-        }
-    }
+    //}
+
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _range);
     }
 
+    protected void FindEnemyTargets()
+    {
+        if (_targetFounded) return;
+
+        foreach (var col in _targetUnitColliders)
+        {
+
+            if (col.gameObject.TryGetComponent(out Unit unit) && !_targetFounded)
+            {
+
+               
+
+                if (unit._unitType != _unitType)
+                {
+                    Debug.Log("Unit bulundu" + col.name);
+                    //SetTheTarget(unit);
+                    _targetUnit = unit;
+
+                    _targetFounded = true;
+                    _targetEliminated = false;
+
+                    //AttackToEnemy();
+
+                    break;
+                }
+
+            }
+        }
+
+    }
+
+
+    private void FindNearestTarget()
+    {
+        if (_targetFounded == true) return;
+
+        float nearestDistance = float.MaxValue;
+
+        foreach (Unit unit in _enemyUnits)
+        {
+            float tempDistance = Vector3.Distance(transform.position, unit.transform.position);
+
+             if(tempDistance < nearestDistance)
+             {
+                nearestDistance = tempDistance;
+
+                //SetTheTarget(unit);
+
+                _targetFounded = true;
+                _targetEliminated = false;
+            }
+        }
+    }
+
+
+    public void CheckTargetIsEliminated(Unit target)
+    {
+        if (target.GetUnitHitPoints() <= 0)
+        {
+            _targetEliminated = true;
+            _targetFounded = false;
+        }
+        //else
+        //    AttackToEnemy();
+            
+    }
+
     private void SetTheTarget(Unit target)
     {
-        _targetTransform = target.transform;
+        _targetUnit = target;
     }
+
+    
 
 
     private void AttackToEnemy()
     {
-        if(_canAttack && _targetSelected)
+        if(_canAttack && _targetFounded && !_targetEliminated)
         {
-            GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint);
 
-            if(arrow != null && _targetTransform != null)
-                arrow.GetComponent<TowerArrow>().MoveToTarget(_targetTransform);
+            CheckTargetIsEliminated(_targetUnit);
 
+            GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint,_unitType);
+
+            if(arrow != null && _targetUnit != null)
+                arrow.GetComponent<TowerArrow>().AttackToTarget(_targetUnit.transform,_damage,this);
+            
             _hitCooldown = 0;
         }
             
@@ -116,5 +199,15 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
+    public void TakeDamage(float damageAmount)
+    {
+        _hitPoints -= damageAmount;
 
+        UpdateHealthSlider();
+    }
+
+    void UpdateHealthSlider()
+    {
+        _healthSlider.value = (_hitPoints / _maxHitPoints);
+    }
 }

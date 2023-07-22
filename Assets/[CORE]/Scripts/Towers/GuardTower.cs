@@ -9,4 +9,15 @@ public class GuardTower : Tower
     {
         CheckEnemyUnitInSight();
     }
+
+    private void CheckEnemyUnitInSight()
+    {
+        _targetUnitColliders = Physics.OverlapSphere(transform.position, _range);
+
+        if (_targetUnitColliders.Length > 0)
+        {
+            FindEnemyTargets();
+        }
+
+    }
 }

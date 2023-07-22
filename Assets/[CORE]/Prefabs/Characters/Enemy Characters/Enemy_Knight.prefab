@@ -122,18 +122,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mana: 0
-  _hitPoints: 0
+  _hitPoints: 1268
   _unitAmount: 0
-  _unitType: 1
+  _unitType: 0
   _attackRange: 0
   _attackSpeed: 0
+  _hitCooldown: 0
   _sightRange: 0
   _damage: 0
-  _moveSpeed: 0
+  _canAttack: 0
+  _moveSpeed: 3
   _mainTower: {fileID: 0}
   _sideTowers: []
-  _characterType: 0
-  _targetCharacterType: 0
+  _targetTower: {fileID: 0}
+  _characterType: 1
+  _targetCharacterType: 1
   _characterState: 0
 --- !u!54 &9143664923306994941
 Rigidbody:

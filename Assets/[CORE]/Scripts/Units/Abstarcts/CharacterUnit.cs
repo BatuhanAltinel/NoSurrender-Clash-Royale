@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[Flags]
 public enum CharacterType
 {
-    Ground = 1,
-    Aerial = 2,
-    LongRange = 4,
+    Knight = 1,
+    Archer = 2,
+    Dragon = 4,
     Support = 8
 }
 
@@ -27,7 +26,9 @@ public abstract class CharacterUnit : Unit
 
     [Header("Target Attributes")]
     [SerializeField] protected Tower _mainTower; 
-    [SerializeField] protected Tower[] _sideTowers; 
+    [SerializeField] protected Tower[] _sideTowers;
+
+    [SerializeField] protected Tower _targetTower;
 
     [Header("Character Type")]
     [SerializeField] protected CharacterType _characterType;
@@ -37,15 +38,26 @@ public abstract class CharacterUnit : Unit
     [SerializeField] protected CharacterState _characterState;
 
 
+    //protected void MoveToTarget()
+    //{
+    //    transform.position = Vector3.MoveTowards(transform.position,_mainTower.transform.position, _moveSpeed * Time.deltaTime);
+    //}
+
     protected void MoveToTarget()
     {
-        transform.position = Vector3.MoveTowards(transform.position,_mainTower.transform.position, _moveSpeed * Time.deltaTime);
+        if(_targetTower != null)
+            transform.position = Vector3.MoveTowards(transform.position, _targetTower.transform.position, _moveSpeed * Time.deltaTime);
     }
 
-    protected void CheckForDie()
+    public void SetTargetTower(Tower tower)
     {
-        if (_hitPoints <= 0)
-            gameObject.SetActive(false);
+        _targetTower = tower;
     }
+
+    public CharacterType GetCharacterType()
+    {
+        return _characterType;
+    }
+
 
 }
