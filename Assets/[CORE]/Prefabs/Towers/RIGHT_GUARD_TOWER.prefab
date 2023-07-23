@@ -233,13 +233,17 @@ MonoBehaviour:
   _unitType: 0
   _healthSlider: {fileID: 0}
   _targetUnit: {fileID: 0}
-  _targetSelected: 0
+  _targetFounded: 0
   _targetUnitColliders: []
   _enemyUnits: []
+  _unitLayer:
+    serializedVersion: 2
+    m_Bits: 0
   _range: 7.5
   _towerArrow: {fileID: 0}
   _arrowThrowPoint: {fileID: 2104875343199170677}
   _hitSpeed: 0.8
+  _canAttack: 0
   _damage: 54
 --- !u!1 &3974344297807654851
 GameObject:
@@ -780,13 +784,17 @@ MonoBehaviour:
   _unitType: 0
   _healthSlider: {fileID: 0}
   _targetUnit: {fileID: 0}
-  _targetSelected: 0
+  _targetFounded: 0
   _targetUnitColliders: []
   _enemyUnits: []
+  _unitLayer:
+    serializedVersion: 2
+    m_Bits: 64
   _range: 7.5
   _towerArrow: {fileID: 0}
   _arrowThrowPoint: {fileID: 2104875343199170677}
   _hitSpeed: 0.8
+  _canAttack: 0
   _damage: 54
 --- !u!65 &3155041383402623960
 BoxCollider:

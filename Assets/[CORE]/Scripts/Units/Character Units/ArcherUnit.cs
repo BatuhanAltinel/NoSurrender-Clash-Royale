@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class ArcherUnit : CharacterUnit , IDamagable
 {
-    // Start is called before the first frame update
+
+    [SerializeField] private Transform _arrowThrowPoint;
+
+
     void Start()
     {
         
@@ -20,5 +23,23 @@ public class ArcherUnit : CharacterUnit , IDamagable
     public void TakeDamage(float damageAmount)
     {
         _hitPoints -= damageAmount;
+        CheckForDie();
+    }
+
+    protected override void AttackToEnemy()
+    {
+        if (_canAttack && _targetFounded && !_targetEliminated)
+        {
+            if (_targetUnit.TryGetComponent(out IDamagable damagable))
+            {
+                damagable.TakeDamage(_damage);
+            }
+
+            GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint, _unitType);
+
+            if (arrow != null && _targetUnit != null)
+                arrow.GetComponent<TowerArrow>().AttackToTarget(_targetUnit.transform, _damage);
+            _hitCooldown = 0;
+        }
     }
 }

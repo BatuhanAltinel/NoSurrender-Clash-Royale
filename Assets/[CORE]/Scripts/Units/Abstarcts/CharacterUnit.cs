@@ -38,14 +38,9 @@ public abstract class CharacterUnit : Unit
     [SerializeField] protected CharacterState _characterState;
 
 
-    //protected void MoveToTarget()
-    //{
-    //    transform.position = Vector3.MoveTowards(transform.position,_mainTower.transform.position, _moveSpeed * Time.deltaTime);
-    //}
-
     protected void MoveToTarget()
     {
-        if(_targetTower != null)
+        if(_targetTower != null && _characterState == CharacterState.Walk)
             transform.position = Vector3.MoveTowards(transform.position, _targetTower.transform.position, _moveSpeed * Time.deltaTime);
     }
 
@@ -58,6 +53,9 @@ public abstract class CharacterUnit : Unit
     {
         return _characterType;
     }
+
+
+
 
 
 }

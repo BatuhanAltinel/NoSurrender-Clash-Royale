@@ -652,14 +652,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hitPoints: 2.568
   _unitType: 0
+  _healthSlider: {fileID: 0}
   _targetUnit: {fileID: 0}
-  _targetSelected: 0
+  _targetFounded: 0
   _targetUnitColliders: []
   _enemyUnits: []
+  _unitLayer:
+    serializedVersion: 2
+    m_Bits: 64
   _range: 7
   _towerArrow: {fileID: 0}
   _arrowThrowPoint: {fileID: 6237907230316591014}
   _hitSpeed: 1
+  _canAttack: 0
   _damage: 54
 --- !u!65 &2632368173822734572
 BoxCollider:

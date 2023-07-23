@@ -20,17 +20,14 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        //GameObject go = SpawnManager.Instance.SpawnEnemy(GetRandomPosition());
-
-        //CharacterUnit unit = go.GetComponent<CharacterUnit>();
-
-        //unit.SetTargetTower(CalculateNearestTower(unit));
         float randomNum = Random.Range(0, 2);
 
         if (randomNum % 2 == 0) charType = CharacterType.Knight;
         else charType = CharacterType.Archer;
 
         CharacterUnit CU = SpawnManager.Instance.SpawnCharacterUnit(charType,GetRandomPosition(),UnitType.Enemy);
+        CU.gameObject.SetActive(true);
+
         CU.SetTargetTower(CalculateNearestTower(CU));
     }
 

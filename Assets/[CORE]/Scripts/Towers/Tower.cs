@@ -26,6 +26,7 @@ public abstract class Tower : MonoBehaviour ,IDamagable
 
     [SerializeField] protected Collider[] _targetUnitColliders;
     [SerializeField] protected List<Unit> _enemyUnits;
+    [SerializeField] protected LayerMask _unitLayer;
     
     [Header("Attack Attributes")]
 
@@ -74,17 +75,16 @@ public abstract class Tower : MonoBehaviour ,IDamagable
         AttackCoolDown();
         AttackToEnemy();
     }
-    
-    //protected void CheckEnemyUnitInSight()
-    //{
-    //    _targetUnitColliders =  Physics.OverlapSphere(transform.position, _range);
 
-    //    if (_targetUnitColliders.Length > 0)
-    //    {
-    //        FindEnemyTargets();
-    //    }
+    protected void CheckEnemyUnitInSight()
+    {
+        _targetUnitColliders = Physics.OverlapSphere(transform.position, _range,_unitLayer);
 
-    //}
+       if(_targetUnitColliders.Length > 0)
+            FindEnemyTargets();
+        
+
+    }
 
 
     private void OnDrawGizmos()
@@ -100,16 +100,16 @@ public abstract class Tower : MonoBehaviour ,IDamagable
         foreach (var col in _targetUnitColliders)
         {
 
-            if (col.gameObject.TryGetComponent(out Unit unit) && !_targetFounded)
+            if (col.gameObject.TryGetComponent(out CharacterUnit unit) && !_targetFounded)
             {
 
-               
+
 
                 if (unit._unitType != _unitType)
                 {
                     Debug.Log("Unit bulundu" + col.name);
-                    //SetTheTarget(unit);
-                    _targetUnit = unit;
+
+                    SetTheTarget(unit);
 
                     _targetFounded = true;
                     _targetEliminated = false;
@@ -123,6 +123,8 @@ public abstract class Tower : MonoBehaviour ,IDamagable
         }
 
     }
+
+
 
 
     private void FindNearestTarget()
@@ -139,7 +141,7 @@ public abstract class Tower : MonoBehaviour ,IDamagable
              {
                 nearestDistance = tempDistance;
 
-                //SetTheTarget(unit);
+                SetTheTarget(unit);
 
                 _targetFounded = true;
                 _targetEliminated = false;
@@ -150,14 +152,13 @@ public abstract class Tower : MonoBehaviour ,IDamagable
 
     public void CheckTargetIsEliminated(Unit target)
     {
-        if (target.GetUnitHitPoints() <= 0)
+        if (target.GetUnitHitPoints() - _damage <= 0)
         {
             _targetEliminated = true;
             _targetFounded = false;
+            SetTheTarget(null);
         }
-        //else
-        //    AttackToEnemy();
-            
+
     }
 
     private void SetTheTarget(Unit target)
@@ -173,13 +174,15 @@ public abstract class Tower : MonoBehaviour ,IDamagable
         if(_canAttack && _targetFounded && !_targetEliminated)
         {
 
-            CheckTargetIsEliminated(_targetUnit);
+            
 
             GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint,_unitType);
 
             if(arrow != null && _targetUnit != null)
-                arrow.GetComponent<TowerArrow>().AttackToTarget(_targetUnit.transform,_damage,this);
-            
+                arrow.GetComponent<TowerArrow>().AttackToTarget(_targetUnit.transform,_damage);
+
+            CheckTargetIsEliminated(_targetUnit);
+
             _hitCooldown = 0;
         }
             

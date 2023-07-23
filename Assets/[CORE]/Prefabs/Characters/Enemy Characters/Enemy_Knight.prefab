@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3923464608768537044}
   - component: {fileID: 2371314465041709263}
   - component: {fileID: 9143664923306994941}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy_Knight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mana: 0
-  _hitPoints: 1268
+  _hitPoints: 160
   _unitAmount: 0
   _unitType: 0
   _attackRange: 0

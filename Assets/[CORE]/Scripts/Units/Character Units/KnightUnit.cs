@@ -14,11 +14,25 @@ public class KnightUnit : CharacterUnit, IDamagable
     void Update()
     {
         MoveToTarget();
-        CheckForDie();
+        //CheckForDie();
     }
 
     public void TakeDamage(float damageAmount)
     {
         _hitPoints -= damageAmount;
+        CheckForDie();
+    }
+
+    protected override void AttackToEnemy()
+    {
+        if (_canAttack && _targetFounded && !_targetEliminated)
+        {
+            if(_targetUnit.TryGetComponent(out IDamagable damagable))
+            {
+                damagable.TakeDamage(_damage);
+            }
+
+            _hitCooldown = 0;
+        }
     }
 }

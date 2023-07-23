@@ -72,7 +72,7 @@ public class ObjectPool : MonoBehaviour
         {
             if (!character.gameObject.activeInHierarchy)
             {
-                character.gameObject.SetActive(true);
+                //character.gameObject.SetActive(true);
                 charPool._pool.Dequeue();
                 charPool._pool.Enqueue(character);
 

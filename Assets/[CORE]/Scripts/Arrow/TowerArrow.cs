@@ -24,13 +24,13 @@ public class TowerArrow : MonoBehaviour
     }
 
 
-    public void AttackToTarget(Transform target,float damage,Tower tower)
+    public void AttackToTarget(Transform target,float damage)
     {
        // Move to enemy transform
-       StartCoroutine(MoveToTargetRoutine(target,damage,tower));
+       StartCoroutine(MoveToTargetRoutine(target,damage));
     } 
 
-    IEnumerator MoveToTargetRoutine(Transform target, float damage,Tower tower )
+    IEnumerator MoveToTargetRoutine(Transform target, float damage)
     {
         bool _canMove = true;
 
@@ -48,15 +48,13 @@ public class TowerArrow : MonoBehaviour
                     {
                         IDamagable dmg = unit.GetComponent<IDamagable>();
 
-                        //tower.CheckTargetIsEliminated(unit);
+                        
 
                         dmg.TakeDamage(damage);
                         
                         gameObject.SetActive(false);
 
                         Debug.Log("Unit took damage");
-
-                       
                         //EventManager.OnTowerAttack?.Invoke(unit);
                     }
 
