@@ -13,14 +13,16 @@ public enum UnitType
 }
 
 
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour,IDamagable
 {
     [Header("Unit Attributes")]
 
-    [SerializeField] protected int _mana;
+    
     [SerializeField] protected float _hitPoints;
-    [SerializeField] protected int _unitAmount;
+    [SerializeField] protected float _maxHitPoints;
+    
     [SerializeField] public UnitType _unitType;
+    [SerializeField] protected Slider _healthSlider;
 
 
     [Header("Unit Attack Attributes")]
@@ -36,14 +38,24 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] protected bool _canAttack;
     [SerializeField] protected bool _targetFounded;
     [SerializeField] protected bool _targetEliminated;
+    [SerializeField] protected bool _inAttackRange;
 
     [SerializeField] protected Unit _targetUnit;
+    [SerializeField] protected Transform _targetTransform;
+
     [SerializeField] protected Collider[] _targetUnitColliders;
     [SerializeField] protected LayerMask _unitLayer;
 
-    private void Awake()
+
+    protected virtual void OnEnable()
     {
         _hitCooldown = _attackSpeed;
+        UpdateHealthSlider();
+    }
+
+    protected virtual void Awake()
+    {
+        _maxHitPoints = _hitPoints;
     }
 
     private void FixedUpdate()
@@ -58,19 +70,15 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-
-    protected void CheckForDie()
-    {
-        if (_hitPoints <= 0)
-            gameObject.SetActive(false);
-    }
-
-
     public float GetUnitHitPoints()
     {
         return _hitPoints;
     }
 
+    public void ResetHitPoints()
+    {
+        _hitPoints = _maxHitPoints;
+    }
 
     protected void AttackCoolDown()
     {
@@ -90,7 +98,7 @@ public abstract class Unit : MonoBehaviour
 
     protected void CheckEnemyUnitInSight()
     {
-        _targetUnitColliders = Physics.OverlapSphere(transform.position, _attackRange, _unitLayer);
+        _targetUnitColliders = Physics.OverlapSphere(transform.position, _sightRange, _unitLayer);
 
         if (_targetUnitColliders.Length > 0)
             FindEnemyTargets();
@@ -98,6 +106,45 @@ public abstract class Unit : MonoBehaviour
 
     }
 
+    protected void FindEnemyTargets()
+    {
+        if (_targetFounded) return;
+
+        foreach (var col in _targetUnitColliders)
+        {
+
+            if (col.gameObject.TryGetComponent(out Unit unit))
+            {
+
+                if (unit._unitType != _unitType)
+                {
+                    SetTheTarget(unit);
+
+                    _targetFounded = true;
+                    _targetEliminated = false;
+
+                    break;
+                }
+
+            }
+        }
+
+    }
+
+
+    protected void CheckAttackRange()
+    {
+        if (!_targetFounded) return;
+
+        if (Vector3.Distance(transform.position, _targetUnit.transform.position) <= _attackRange && !_inAttackRange)
+        {
+            _inAttackRange = true;
+
+            AttackToEnemy();
+            
+        }
+
+    }
 
 
     private void OnDrawGizmos()
@@ -110,44 +157,39 @@ public abstract class Unit : MonoBehaviour
     }
 
 
-    protected void FindEnemyTargets()
-    {
-        if (_targetFounded) return;
-
-        foreach (var col in _targetUnitColliders)
-        {
-
-            if (col.gameObject.TryGetComponent(out CharacterUnit unit) && !_targetFounded)
-            {
 
 
-
-                if (unit._unitType != _unitType)
-                {
-                    Debug.Log("Unit bulundu" + col.name);
-
-                    SetTheTarget(unit);
-
-                    _targetFounded = true;
-                    _targetEliminated = false;
-
-                    //AttackToEnemy();
-
-                    break;
-                }
-
-            }
-        }
-
-    }
-
-
-    void SetTheTarget(Unit unit)
+    public void SetTheTarget(Unit unit)
     {
         _targetUnit = unit;
     }
 
-    protected abstract void AttackToEnemy();
+    protected virtual void CheckTargetIsEliminated()
+    {
+        if (_targetUnit.GetUnitHitPoints() <= 0)
+        {
+            _targetEliminated = true;
+            _targetFounded = false;
+            _inAttackRange = false;
+
+            _targetUnit.gameObject.SetActive(false);
+
+            SetTheTarget(null);
+        }
+    }
+
+    public void TakeDamage(float damageAmount)
+    {
+        _hitPoints -= damageAmount;
+        UpdateHealthSlider();
+    }
+
+    private void UpdateHealthSlider()
+    {
+        _healthSlider.value = _hitPoints / _maxHitPoints;
+    }
+
+    public abstract void AttackToEnemy();
         
 
 }

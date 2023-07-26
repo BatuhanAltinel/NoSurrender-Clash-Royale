@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerManager : MonoBehaviour
+public class TowerManager : Singleton<TowerManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] Tower[] _tower;
+    
+    public Tower[] GetAllTowers()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return _tower;
     }
 }

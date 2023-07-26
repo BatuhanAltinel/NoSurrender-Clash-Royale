@@ -16,13 +16,7 @@ public class DragonUnit : CharacterUnit,IDamagable
         
     }
 
-    public void TakeDamage(float damageAmount)
-    {
-        _hitPoints -= damageAmount;
-        CheckForDie();
-    }
-
-    protected override void AttackToEnemy()
+    public override void AttackToEnemy()
     {
         if (_canAttack && _targetFounded && !_targetEliminated)
         {

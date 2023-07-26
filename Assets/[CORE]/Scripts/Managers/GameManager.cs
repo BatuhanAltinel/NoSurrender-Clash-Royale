@@ -6,6 +6,7 @@ using UnityEngine;
 public enum GameState
 {
     ReadyToStart,
+    OnTimer,
     InGame,
     End
 }
@@ -13,7 +14,7 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
-    GameState _gameState = GameState.ReadyToStart;
+    [SerializeField] GameState _gameState = GameState.ReadyToStart;
 
 
 

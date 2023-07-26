@@ -410,14 +410,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5482466631125185250}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.23}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2378893657245145793}
   - {fileID: 3385089881237631590}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &8135686636281628433
 CapsuleCollider:
@@ -441,7 +441,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2.4
   m_Direction: 1
-  m_Center: {x: 0, y: 1.35, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &2401676966739450659
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -481,29 +481,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cb6ebb010fd094aa7528a2821488a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mana: 0
-  _hitPoints: 500
-  _unitAmount: 0
+  _hitPoints: 1380
+  _maxHitPoints: 0
   _unitType: 0
-  _attackRange: 0
-  _attackSpeed: 0
+  _healthSlider: {fileID: 1115186986651220088}
+  _attackRange: 1.2
+  _attackSpeed: 1.2
   _hitCooldown: 0
-  _sightRange: 0
-  _damage: 0
+  _sightRange: 5.5
+  _damage: 167
   _canAttack: 0
   _targetFounded: 0
   _targetEliminated: 0
+  _inAttackRange: 0
   _targetUnit: {fileID: 0}
+  _targetTransform: {fileID: 0}
   _targetUnitColliders: []
   _unitLayer:
     serializedVersion: 2
     m_Bits: 64
+  _innerModel: {fileID: 2378893657244780257}
+  _mana: 3
+  _unitAmount: 1
   _moveSpeed: 3
-  _mainTower: {fileID: 0}
-  _sideTowers: []
   _targetTower: {fileID: 0}
   _characterType: 1
-  _targetCharacterType: 0
   _characterState: 0
 --- !u!1 &6306719085788522935
 GameObject:
@@ -648,7 +650,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400320, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.225
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 400320, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -682,6 +684,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a3eac3b3c0e61614fac408a86ce99300, type: 2}
     - target: {fileID: 13700008, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -699,6 +705,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
+--- !u!1 &2378893657244780257 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100320, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
+  m_PrefabInstance: {fileID: 2378893657244745985}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2378893657245145793 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400320, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}

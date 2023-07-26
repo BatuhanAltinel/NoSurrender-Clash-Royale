@@ -17,11 +17,9 @@ public class SpawnManager : Singleton<SpawnManager>
 
     }
 
-    public GameObject SpawnArrow(Transform arrowThrowPoint,UnitType unitType)
+    public GameObject SpawnArrow(Transform arrowThrowPoint)
     {
         GameObject go = _objPool.GetObjectFromPool(0);
-
-        go.GetComponent<TowerArrow>().SetUnitType(unitType);
 
         if(go != null)
         {

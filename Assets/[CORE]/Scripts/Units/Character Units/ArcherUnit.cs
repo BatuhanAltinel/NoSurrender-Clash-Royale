@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArcherUnit : CharacterUnit , IDamagable
+public class ArcherUnit : CharacterUnit
 {
 
     [SerializeField] private Transform _arrowThrowPoint;
@@ -17,29 +17,34 @@ public class ArcherUnit : CharacterUnit , IDamagable
     void Update()
     {
         MoveToTarget();
-        CheckForDie();
+        RotateToTarget();
+        CheckAttackRange();
     }
 
-    public void TakeDamage(float damageAmount)
+    public override void AttackToEnemy()
     {
-        _hitPoints -= damageAmount;
-        CheckForDie();
-    }
+        CheckTargetIsEliminated();
 
-    protected override void AttackToEnemy()
-    {
-        if (_canAttack && _targetFounded && !_targetEliminated)
+        if (_targetFounded && !_targetEliminated)
         {
-            if (_targetUnit.TryGetComponent(out IDamagable damagable))
-            {
-                damagable.TakeDamage(_damage);
-            }
-
-            GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint, _unitType);
-
-            if (arrow != null && _targetUnit != null)
-                arrow.GetComponent<TowerArrow>().AttackToTarget(_targetUnit.transform, _damage);
             _hitCooldown = 0;
+
+            EventManager.OnCharacterStateChange?.Invoke(this, CharacterState.Attack);
+
+            GameObject arrow = SpawnManager.Instance.SpawnArrow(_arrowThrowPoint);
+
+            arrow.GetComponent<TowerArrow>().AttackToTarget(_targetUnit.transform, _damage);
+
+            StartCoroutine(WaitAfterAttack());
+
+            
         }
+    }
+
+    IEnumerator WaitAfterAttack()
+    {
+        yield return new WaitForSeconds(_attackSpeed);
+
+        AttackToEnemy();
     }
 }
