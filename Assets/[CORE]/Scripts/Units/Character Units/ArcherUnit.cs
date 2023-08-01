@@ -17,7 +17,6 @@ public class ArcherUnit : CharacterUnit
     void Update()
     {
         MoveToTarget();
-        RotateToTarget();
         CheckAttackRange();
     }
 

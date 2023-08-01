@@ -395,6 +395,7 @@ GameObject:
   - component: {fileID: 8135686636281628433}
   - component: {fileID: 2401676966739450659}
   - component: {fileID: 1359692047078378760}
+  - component: {fileID: 1304408110131472054}
   m_Layer: 6
   m_Name: KNIGHT
   m_TagString: Untagged
@@ -441,7 +442,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 2.4
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1.04, z: 0}
 --- !u!54 &2401676966739450659
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -507,6 +508,28 @@ MonoBehaviour:
   _targetTower: {fileID: 0}
   _characterType: 1
   _characterState: 0
+--- !u!195 &1304408110131472054
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5482466631125185250}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &6306719085788522935
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400320, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400320, guid: 6aa8f6756ec685443847b09fc4fc149c, type: 3}
       propertyPath: m_LocalPosition.z

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.AI;
 
 public enum CharacterType
 {
@@ -21,6 +22,8 @@ public enum CharacterState
 public abstract class CharacterUnit : Unit
 {
     protected Animator _anim;
+    protected NavMeshAgent _agent;
+
     [SerializeField] GameObject _innerModel;
 
     [SerializeField] protected int _mana;
@@ -51,29 +54,25 @@ public abstract class CharacterUnit : Unit
     {
         base.Awake();
         _anim = _innerModel.GetComponent<Animator>();
+        _agent = GetComponent<NavMeshAgent>();
         
+    }
+
+    private void Start()
+    {
+        _agent.speed = _moveSpeed;
     }
 
     protected void MoveToTarget()
     {
         if (_characterState == CharacterState.Attack) return;
 
-        //if(_targetTower != null && !_targetFounded)
-        //    transform.position = Vector3.MoveTowards(transform.position, _targetTower.transform.position, _moveSpeed * Time.deltaTime);
-
-        //if(_targetFounded && !_targetEliminated)
-        //    transform.position = Vector3.MoveTowards(transform.position, _targetUnit.transform.position, _moveSpeed * Time.deltaTime);
-
         if (_targetTower != null && !_targetFounded) _targetTransform = _targetTower.transform;
         else if (_targetFounded && !_targetEliminated) _targetTransform = _targetUnit.transform;
 
-        transform.position = Vector3.MoveTowards(transform.position, _targetTransform.position, _moveSpeed * Time.deltaTime);
+        _agent.destination = _targetTransform.position;
     }
 
-    protected void RotateToTarget()
-    {
-        _innerModel.transform.rotation = Quaternion.Lerp(transform.rotation, _targetTransform.rotation, 0.2f);
-    }
 
     public void SetTargetTower(Tower tower)
     {
